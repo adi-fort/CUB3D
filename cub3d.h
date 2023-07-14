@@ -6,7 +6,7 @@
 /*   By: dfiliagg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 09:17:05 by dfiliagg          #+#    #+#             */
-/*   Updated: 2023/07/11 16:49:20 by adi-fort         ###   ########.fr       */
+/*   Updated: 2023/07/14 15:10:03 by adi-fort         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ typedef struct s_ray_hit
 }	t_ray_hit;
 
 //parsing
-typedef strcut s_parse
+typedef struct s_parse
 {
 	char	*NO_path;
 	char	*SO_path;
@@ -83,5 +83,8 @@ typedef strcut s_parse
 	int		F_rgb[3];
 	int		C_rgb[3];
 }	t_parse;
+
+//functions
+char	**ft_read_map(t_game *game, char *argv, t_parse *parse);
 
 #endif
