@@ -6,7 +6,7 @@
 #    By: dfiliagg <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/20 10:46:16 by dfiliagg          #+#    #+#              #
-#    Updated: 2023/05/30 10:27:42 by adi-fort         ###   ########.fr        #
+#    Updated: 2023/07/14 17:26:59 by adi-fort         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,23 +23,23 @@ MLX		= -L ./minilibx-linux -lmlx -L/usr/lib -lXext -lX11 -lm -lz
 all: ${NAME}
 
 ${LFT}:
-		make -C libft
+		@make -C libft > /dev/null 2>&1
 ${MLB}:
-		make -C minilibx-linux
+		@make -C minilibx-linux > /dev/null 2>&1
 .o:.c
-	${CC} ${OBJ} -c $< -o ${<:.c=.o}
+	@${CC} ${OBJ} -c $< -o ${<:.c=.o}
 
 ${NAME}: ${OBJ} ${LFT} ${MLB}
-	${CC} ${OBJ} ${LFT} ${MLB} $(MLX) -o ${NAME}
+	@${CC} ${OBJ} ${LFT} ${MLB} $(MLX) -o ${NAME}
 
 clean:
-	${RM} ${OBJ}
-	make clean -C libft
-	make clean -C minilibx-linux
+	@${RM} ${OBJ}
+	@make clean -C libft > /dev/null 2>&1
+	@make clean -C minilibx-linux > /dev/null 2>&1
 
 fclean: clean
-	${RM} ${NAME}
-	make fclean -C libft
+	@${RM} ${NAME}
+	@make fclean -C libft > /dev/null 2>&1
 
 re: fclean all
 
