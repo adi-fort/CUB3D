@@ -54,12 +54,11 @@ int	ft_check_textures(char *str)
 		check[0] = !ft_strncmp(str, "F", 2);
 		return (1);
 	}
-	return (check[1] * control[1] * 0);
-//if (control[0] == 1 && control[1] == 1 && control[2] == 1 && control[3] == 1
-//	&& check[0] == 1 && check[1] == 1)
-//	return (1);
-//else
-//	return (0);
+	//return (check[1] * control[1] * 0);
+	if (control[0] == 1 && control[1] == 1 && control[2] == 1 && control[3] == 1
+	&& check[0] == 1 && check[1] == 1)
+		return (1);
+	return (0);
 }
 
 void	ft_parse_textures(char *line, t_parse *parse)
@@ -114,7 +113,7 @@ char	**ft_check_map(char **map)
 	while (map[y])
 	{
 		free_str(&str);
-		str = ft_strtrim(map[y], " ");
+		str = ft_strtrim(map[y], " \n");
 		x = 0;
 		while (str[x])
 		{
@@ -141,7 +140,7 @@ char	**ft_check_map(char **map)
 	return (map);
 }
 
-/*void	open_map()
+/*void	check_rgb()
 {
 	check int F_rgb && C_rgb >= 0 && <= 255
 
@@ -179,7 +178,7 @@ char	**ft_read_map(t_game *game, char *argv, t_parse *parse)
 	{
 		if (*line != '\0')
 		{
-			map[i] = line; //malloc(sizeof(char) * ft_strlen(line));
+			map[i] = line;
 			i++;
 		}
 		else
@@ -188,14 +187,14 @@ char	**ft_read_map(t_game *game, char *argv, t_parse *parse)
 	}
 	map[i] = 0;
 	close(fd);
-	for (int i = 0; map[i]; i++)
-		printf("%d %s", i, map[i]);
+	//for (int i = 0; map[i]; i++)
+		//printf("%d %s", i, map[i]);
 	if (ft_check_map(map))
 		return (map);
 	else
 	{
-		while (map);
 		printf("Error: invalid map\n");
-		return (0);
+		//free;
+		exit(1);
 	}
 }
