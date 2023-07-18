@@ -6,7 +6,7 @@
 /*   By: dfiliagg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 09:17:05 by dfiliagg          #+#    #+#             */
-/*   Updated: 2023/07/18 16:18:38 by adi-fort         ###   ########.fr       */
+/*   Updated: 2023/07/18 17:29:57 by adi-fort         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,26 @@ int	main(int argc, char **argv)
 		map = ft_read_map(&game, argv[1], &parse);
 		if (!map)
 			exit(1);
-		mlx_loop(game.mlx);
+		if (!parse.NO_path || !parse.SO_path || !parse.EA_path || !parse.WE_path)
+		{
+			printf("Error: missing textures path\n");
+			return (1);
+		}
+		game.no.img = mlx_xpm_file_to_image(game.mlx, parse.NO_path, &game.no.w,
+		&game.no.h);
+		game.so.img = mlx_xpm_file_to_image(game.mlx, parse.SO_path, &game.so.w,
+		&game.so.h);
+		game.ea.img = mlx_xpm_file_to_image(game.mlx, parse.EA_path, &game.ea.w,
+		&game.ea.h);
+		game.we.img = mlx_xpm_file_to_image(game.mlx, parse.WE_path, &game.we.w,
+		&game.we.h);
+		if (game.no.img == 0 || game.so.img == 0 || game.ea.img == 0 ||
+			game.we.img == 0)
+		{
+			printf("Error: invalid textures path\n");
+			return (1);
+		}
+		//mlx_loop(game.mlx);	
 	}
 	return (0);
 }

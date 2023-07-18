@@ -6,7 +6,7 @@
 /*   By: dfiliagg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 09:17:05 by dfiliagg          #+#    #+#             */
-/*   Updated: 2023/07/14 15:10:03 by adi-fort         ###   ########.fr       */
+/*   Updated: 2023/07/18 17:08:47 by adi-fort         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,6 @@
 # define MOVSPEED 0.1
 # define ROTSPEED 0.05
 
-// display e dati di gioco
-typedef struct s_game
-{
-	void		*mlx;
-	void		*mlx_win;
-}	t_game;
 
 // stato della telecamera (posizione, direzione, piano di proiezione)
 typedef struct s_state
@@ -83,6 +77,29 @@ typedef struct s_parse
 	int		F_rgb[3];
 	int		C_rgb[3];
 }	t_parse;
+
+//struttura di ogni immagine
+typedef struct s_image
+{
+	void	*img;
+	void	*addr;
+	int		h;
+	int		w;
+	int		bpp;
+	int		ll;
+	int		endian;
+}	t_image;
+
+// display e dati di gioco
+typedef struct s_game
+{
+	void	*mlx;
+	void	*mlx_win;
+	t_image	no;
+	t_image	so;
+	t_image	ea;
+	t_image	we;
+}	t_game;
 
 //functions
 char	**ft_read_map(t_game *game, char *argv, t_parse *parse);

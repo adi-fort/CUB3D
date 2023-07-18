@@ -142,6 +142,7 @@ char	**ft_check_map(char **map)
 	}
 	if (pos_counter != 1)
 		return (0);
+	x = 0;
 	while (str && str[x])
 	{	
 		if (str[x] != '1')
@@ -208,13 +209,7 @@ char	**ft_read_map(t_game *game, char *argv, t_parse *parse)
 	}
 	map[i] = 0;
 	close(fd);
-	if (!ft_check_rgb(parse))
-	{
-		printf("Error: invalid map\n");
-		//free;
-		exit(1);
-	}
-	if (ft_check_map(map) && ft_check_map2(map))
+	if (ft_check_map(map) && ft_check_map2(map) && ft_check_rgb(parse))
 		return (map);
 	else
 	{
