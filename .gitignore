@@ -1,3 +1,4 @@
 *.o
-cub3d-tester
+cub3d-tester/
+*/.git*
 *.swp
