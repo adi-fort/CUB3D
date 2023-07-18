@@ -22,41 +22,17 @@ void	free_mat(char	***mat)
 
 int	ft_check_textures(char *str)
 {
-	static int	control[4];
-	static int	check[2];
-	
 	if (!ft_strncmp(str, "NO", 3))
-	{
-		control[0] = !ft_strncmp(str, "NO", 3);
 		return (1);
-	}
 	if (!ft_strncmp(str, "SO", 3))
-	{	control[1] = !ft_strncmp(str, "SO", 3);
 		return (1);
-	}
 	if (!ft_strncmp(str, "EA", 3))
-	{	
-		control[2] = !ft_strncmp(str, "EA", 3);
 		return (1);
-	}
 	if (!ft_strncmp(str, "WE", 3))
-	{	
-		control[3] = !ft_strncmp(str, "WE", 3);
 		return (1);
-	}
 	if (!ft_strncmp(str, "C", 2))
-	{	
-		check[0] = !ft_strncmp(str, "C", 2);
 		return (1);
-	}
 	if (!ft_strncmp(str, "F", 2))
-	{
-		check[0] = !ft_strncmp(str, "F", 2);
-		return (1);
-	}
-	//return (check[1] * control[1] * 0);
-	if (control[0] == 1 && control[1] == 1 && control[2] == 1 && control[3] == 1
-	&& check[0] == 1 && check[1] == 1)
 		return (1);
 	return (0);
 }
@@ -146,12 +122,12 @@ char	**ft_check_map(char **map)
 	pos_counter = 0;
 	y = 0;
 	str = 0;
-	while (map[y])
+	while (map && map[y])
 	{
 		free_str(&str);
 		str = ft_strtrim(map[y], " \n");
 		x = 0;
-		while (str[x])
+		while (str && str[x])
 		{
 			if (y == 0 && str[x] != '1')
 				return (0);
@@ -166,7 +142,7 @@ char	**ft_check_map(char **map)
 	}
 	if (pos_counter != 1)
 		return (0);
-	while (str[x])
+	while (str && str[x])
 	{	
 		if (str[x] != '1')
 			return (0);
@@ -179,7 +155,7 @@ char	**ft_check_map(char **map)
 int	ft_check_rgb(t_parse *parse)
 {
 	int	i;
-	
+
 	i = 0;
 	while (i < 3)
 	{
@@ -232,10 +208,13 @@ char	**ft_read_map(t_game *game, char *argv, t_parse *parse)
 	}
 	map[i] = 0;
 	close(fd);
-	//for (int i = 0; map[i]; i++)
-		//printf("%d %s", i, map[i]);
-	map = ft_check_map(map);
-	if (ft_check_map2(map) && ft_check_rgb(parse))
+	if (!ft_check_rgb(parse))
+	{
+		printf("Error: invalid map\n");
+		//free;
+		exit(1);
+	}
+	if (ft_check_map(map) && ft_check_map2(map))
 		return (map);
 	else
 	{

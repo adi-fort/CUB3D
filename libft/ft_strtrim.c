@@ -6,55 +6,70 @@
 /*   By: dfiliagg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 10:10:57 by dfiliagg          #+#    #+#             */
-/*   Updated: 2023/01/23 08:09:48 by dfiliagg         ###   ########.fr       */
+/*   Updated: 2023/07/18 16:36:01 by adi-fort         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*end(char *outstr, char *outstr_start, unsigned int outstr_size)
+int	ft_inset(const char c, const char *set)
 {
-	outstr = malloc(sizeof(char) * outstr_size);
-	if (!outstr)
-		return (0);
-	ft_strlcpy(outstr, outstr_start, outstr_size);
-	return (outstr);
-}
+	size_t	i;
 
-static unsigned int	is_in_set(char c, char const *set)
-{
-	while (*set)
+	i = 0;
+	while (set[i])
 	{
-		if (c == *set)
+		if (c == set[i])
 			return (1);
-		set++;
+		i++;
 	}
 	return (0);
 }
 
-char	*ft_strtrim(char const *s1, char const *set)
+size_t	ft_tobetrimmed(const char *s1, const char *set)
 {
-	int				i;
-	unsigned int	outstr_size;
-	char			*outstr_start;
-	char			*outstr_end;
-	char			*outstr;
+	size_t	n;
+	size_t	i;
+	size_t	m;
 
-	if (!s1 || !set)
+	i = 0;
+	n = 0;
+	while (s1[n] && ft_inset(s1[n], set))
+		n++;
+	i = ft_strlen(s1);
+	if (n == i)
+		return (n);
+	m = 0;
+	while (i-- > 0 && ft_inset(s1[i], set))
+		m++;
+	return (n + m);
+}
+
+char	*ft_strtrim(const char *s1, const char *set)
+{
+	size_t	len;
+	size_t	i;
+	size_t	j;
+	char	*trimmed;
+
+	if (!set || !s1)
+		return ((char *)s1);
+	len = ft_strlen(s1);
+	len -= ft_tobetrimmed(s1, set);
+	trimmed = (char *) malloc(sizeof(char) * (len + 1));
+	if (!trimmed)
 		return (0);
 	i = 0;
-	while (s1[i] && is_in_set(s1[i], set))
+	j = 0;
+	while (j < len)
+	{
+		while (ft_inset(s1[i], set) && j == 0)
+			i++;
+		trimmed[j] = s1[i];
+		j++;
 		i++;
-	outstr_start = (char *)&s1[i];
-	i = ft_strlen((char *)s1) - 1;
-	if (i != -1)
-		while (i >= 0 && is_in_set(s1[i], set))
-			i--;
-	outstr_end = (char *)&s1[i];
-	if (!*s1 || outstr_end == outstr_start)
-		outstr_size = 2;
-	else
-		outstr_size = outstr_end - outstr_start + 2;
-	outstr = 0;
-	return (end(outstr, outstr_start, outstr_size));
+	}
+	trimmed[j] = 0;
+	return (trimmed);
 }
+
