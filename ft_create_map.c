@@ -100,6 +100,32 @@ void	ft_parse_textures(char *line, t_parse *parse)
 	free_mat(&path);
 }
 
+int	ft_check_map2(char **map)
+{
+	int	y;
+	int x;
+
+	y = 1;
+	while (map[y + 1])
+	{
+		x = 1;
+		while (map[x + 1])
+		{
+			if (map[y][x] == 32) 
+			{	
+				if (map[y - 1][x - 1] == '0' || map[y - 1][x] == '0' ||
+					map[y - 1][x + 1] == '0' || map [y][x - 1] == '0' || map[y][x + 1]
+					== '0'|| map[y + 1][x - 1] == '0' || map[y + 1][x] == '0' || map[y +
+					1][x = 1] == '0')
+						return(0);
+			}	
+			x++;
+		}
+		y++;
+	}
+	return (1);
+}
+
 char	**ft_check_map(char **map)
 {
 	int		y;
@@ -140,11 +166,20 @@ char	**ft_check_map(char **map)
 	return (map);
 }
 
-/*void	check_rgb()
+int	ft_check_rgb(t_parse *parse)
 {
-	check int F_rgb && C_rgb >= 0 && <= 255
-
-}*/
+	int	i;
+	
+	i = 0;
+	while (i < 3)
+	{
+		if (parse->F_rgb[i] < 0 || parse->F_rgb[i] > 255 || parse->C_rgb[i] < 0
+			|| parse->C_rgb[i] > 255) 
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 
 char	**ft_read_map(t_game *game, char *argv, t_parse *parse)
@@ -189,7 +224,8 @@ char	**ft_read_map(t_game *game, char *argv, t_parse *parse)
 	close(fd);
 	//for (int i = 0; map[i]; i++)
 		//printf("%d %s", i, map[i]);
-	if (ft_check_map(map))
+	map = (ft_check_map(map));
+	if (ft_check_map2(map) && ft_check_rgb(parse))
 		return (map);
 	else
 	{
