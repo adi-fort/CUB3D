@@ -1,4 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_create_map.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adi-fort <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/20 16:18:47 by adi-fort          #+#    #+#             */
+/*   Updated: 2023/07/20 16:18:53 by adi-fort         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
+
+//controllare F e C con almeno 3 argomenti - che ci sia la mappa e che ci sia
+//qualcosa nel file
+
 
 void	free_str(char	**str)
 {
@@ -47,16 +63,18 @@ void	ft_parse_textures(char *line, t_parse *parse)
 	path = 0;
 	str = ft_strtrim(line, " ");
 	path = ft_split(str, ' ');
-	if (ft_check_textures(path[0]) == 1)
+	if (ft_check_textures(path[0]))
 	{
-		if (!ft_strncmp(path[0], "N0", 3))
+		if (ft_strlen(path[1]) > 0)
+			path[1][ft_strlen(path[1]) - 1] = '\0';
+		if (!ft_strncmp(path[0], "NO", 3))
 			parse->NO_path = path[1];
-		else if (!ft_strncmp(path[0], "S0", 3))
+		else if (!ft_strncmp(path[0], "SO", 3))
 			parse->SO_path = path[1];
 		else if (!ft_strncmp(path[0], "WE", 3))
-			parse->EA_path = path[1];
-		else if (!ft_strncmp(path[0], "EA", 3))
 			parse->WE_path = path[1];
+		else if (!ft_strncmp(path[0], "EA", 3))
+			parse->EA_path = path[1];
 		else if (str[0] == 'F')
 		{
 			c_f = ft_split(str, ',');
@@ -73,7 +91,7 @@ void	ft_parse_textures(char *line, t_parse *parse)
 		}
 	}
 	free_str(&str);
-	free_mat(&path);
+	//free_mat(&path) -> FARE STRDUP e FREARE PATH;
 }
 
 int	ft_map_len(char **map)

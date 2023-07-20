@@ -6,7 +6,7 @@
 /*   By: dfiliagg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 09:17:05 by dfiliagg          #+#    #+#             */
-/*   Updated: 2023/07/18 17:29:57 by adi-fort         ###   ########.fr       */
+/*   Updated: 2023/07/18 17:46:18 by adi-fort         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	main(int argc, char **argv)
 			printf("Error: invalid textures path\n");
 			return (1);
 		}
-		//mlx_loop(game.mlx);	
+		mlx_loop(game.mlx);	
 	}
 	return (0);
 }
