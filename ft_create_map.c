@@ -6,31 +6,11 @@
 /*   By: adi-fort <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 16:18:47 by adi-fort          #+#    #+#             */
-/*   Updated: 2023/07/25 12:46:25 by adi-fort         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:50:28 by adi-fort         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	free_str(char	**str)
-{
-	if (str)
-		free(*str);
-	*str = NULL;
-}
-
-void	free_mat(char	***mat)
-{
-	int	i;
-
-	i = 0;
-	while (*mat && (*mat)[i])
-	{
-		free_str(&((*mat)[i]));
-		i++;
-	}
-	*mat = NULL;
-}
 
 int	ft_check_textures(char *str)
 {
@@ -55,6 +35,7 @@ void	ft_parse_textures(char *line, t_parse *parse)
 	char		**path;
 	char		**c_f;
 
+	c_f = 0;
 	str = 0;
 	path = 0;
 	str = ft_strtrim(line, " ");
@@ -85,19 +66,10 @@ void	ft_parse_textures(char *line, t_parse *parse)
 			parse->C_rgb[1] = ft_atoi(c_f[1]);
 			parse->C_rgb[2] = ft_atoi(c_f[2]);
 		}
-	}
+	}	
 	free_str(&str);
 	free_mat(&path);
-}
-
-int	ft_map_len(char **map)
-{
-	int	y;
-
-	y = -1;
-	while (map[++y])
-		;
-	return (y);
+	free_mat(&c_f);
 }
 
 int	ft_check_map2(char **map)
@@ -221,6 +193,7 @@ char	**ft_read_map(t_game *game, char *argv, t_parse *parse)
 			free(line);
 		line = get_next_line(fd);
 	}
+	free_str(&line);
 	map[i] = 0;
 	close(fd);
 	if (ft_check_map(map) && ft_check_map2(map) && ft_check_rgb(parse))
