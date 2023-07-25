@@ -6,15 +6,11 @@
 /*   By: adi-fort <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 16:18:47 by adi-fort          #+#    #+#             */
-/*   Updated: 2023/07/20 16:18:53 by adi-fort         ###   ########.fr       */
+/*   Updated: 2023/07/25 12:46:25 by adi-fort         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-//controllare F e C con almeno 3 argomenti - che ci sia la mappa e che ci sia
-//qualcosa nel file
-
 
 void	free_str(char	**str)
 {
@@ -55,9 +51,9 @@ int	ft_check_textures(char *str)
 
 void	ft_parse_textures(char *line, t_parse *parse)
 {
-	char *str;
-	char **path;
-	char **c_f;
+	char		*str;
+	char		**path;
+	char		**c_f;
 
 	str = 0;
 	path = 0;
@@ -68,13 +64,13 @@ void	ft_parse_textures(char *line, t_parse *parse)
 		if (ft_strlen(path[1]) > 0)
 			path[1][ft_strlen(path[1]) - 1] = '\0';
 		if (!ft_strncmp(path[0], "NO", 3))
-			parse->NO_path = path[1];
+			parse->NO_path = ft_strdup(path[1]);
 		else if (!ft_strncmp(path[0], "SO", 3))
-			parse->SO_path = path[1];
+			parse->SO_path = ft_strdup(path[1]);
 		else if (!ft_strncmp(path[0], "WE", 3))
-			parse->WE_path = path[1];
+			parse->WE_path = ft_strdup(path[1]);
 		else if (!ft_strncmp(path[0], "EA", 3))
-			parse->EA_path = path[1];
+			parse->EA_path = ft_strdup(path[1]);
 		else if (str[0] == 'F')
 		{
 			c_f = ft_split(str, ',');
@@ -91,7 +87,7 @@ void	ft_parse_textures(char *line, t_parse *parse)
 		}
 	}
 	free_str(&str);
-	//free_mat(&path) -> FARE STRDUP e FREARE PATH;
+	free_mat(&path);
 }
 
 int	ft_map_len(char **map)
@@ -107,21 +103,21 @@ int	ft_map_len(char **map)
 int	ft_check_map2(char **map)
 {
 	int	y;
-	int x;
+	int	x;
 
 	y = 1;
-	while (map[y] && y <  ft_map_len(map) - 1)
+	while (map[y] && y < ft_map_len(map) - 1)
 	{
 		x = 1;
 		while (map[y][x] && (size_t)x < ft_strlen(map[y]) - 1)
 		{
 			if (map[y][x] == 32) 
-			{	
+			{
 				if (map[y - 1][x - 1] == '0' || map[y - 1][x] == '0' ||
-					map[y - 1][x + 1] == '0' || map [y][x - 1] == '0' || map[y][x + 1]
-					== '0'|| map[y + 1][x - 1] == '0' || map[y + 1][x] == '0' || map[y +
-					1][x = 1] == '0')
-						return(0);
+					map[y - 1][x + 1] == '0' || map[y][x - 1] == '0' ||
+					map[y][x + 1] == '0' || map[y + 1][x - 1] == '0' ||
+					map[y + 1][x] == '0' || map[y + 1][x - 1] == '0')
+					return (0);
 			}
 			x++;
 		}
@@ -150,9 +146,10 @@ char	**ft_check_map(char **map)
 			if (y == 0 && str[x] != '1')
 				return (0);
 			if ((x == 0 && str[x] != '1') || (x == ft_strlen(str) - 1 && str[x]
-				!= '1'))
+					!= '1'))
 				return (0);
-			if (str[x] == 'N' || str[x] == 'W' || str[x] == 'E' || str[x] == 'S')
+			if (str[x] == 'N' || str[x] == 'W' || str[x] == 'E'
+				|| str[x] == 'S')
 				pos_counter++;
 			x++;
 		}
@@ -162,7 +159,7 @@ char	**ft_check_map(char **map)
 		return (0);
 	x = 0;
 	while (str && str[x])
-	{	
+	{
 		if (str[x] != '1')
 			return (0);
 		x++;
@@ -186,15 +183,14 @@ int	ft_check_rgb(t_parse *parse)
 	return (1);
 }
 
-
 char	**ft_read_map(t_game *game, char *argv, t_parse *parse)
 {
-	int	fd;
-	int	i;
-	int	j;
+	int		fd;
+	int		i;
+	int		j;
 	char	*line;
 	char	**map;
-	
+
 	(void)game;
 	i = 0;
 	j = 0;
@@ -232,7 +228,8 @@ char	**ft_read_map(t_game *game, char *argv, t_parse *parse)
 	else
 	{
 		printf("Error: invalid map\n");
-		//free;
+		free_str(&line);
+		free_mat(&map);
 		exit(1);
 	}
 }

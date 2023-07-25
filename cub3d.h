@@ -6,7 +6,7 @@
 /*   By: dfiliagg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 09:17:05 by dfiliagg          #+#    #+#             */
-/*   Updated: 2023/07/18 17:08:47 by adi-fort         ###   ########.fr       */
+/*   Updated: 2023/07/25 12:57:34 by adi-fort         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,7 @@ typedef struct s_game
 
 //functions
 char	**ft_read_map(t_game *game, char *argv, t_parse *parse);
-
+void	free_str(char **str);
+void	free_mat(char ***mat);
+int	ft_map_len(char **map);
 #endif
