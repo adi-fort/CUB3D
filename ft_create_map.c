@@ -6,7 +6,7 @@
 /*   By: adi-fort <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 16:18:47 by adi-fort          #+#    #+#             */
-/*   Updated: 2023/07/25 14:50:28 by adi-fort         ###   ########.fr       */
+/*   Updated: 2023/07/26 16:33:51 by adi-fort         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,44 @@ int	ft_check_textures(char *str)
 	return (0);
 }
 
-void	ft_parse_textures(char *line, t_parse *parse)
+void	ft_parse_c_f(char *line, t_parse *parse)
 {
-	char		*str;
-	char		**path;
-	char		**c_f;
+	char	*str;
+	char	**path;
+	char	**c_f;	
 
 	c_f = 0;
+	str = 0;
+	path = 0;
+	str = ft_strtrim(line, " ");
+	path = ft_split(str, ' ');
+	if (ft_check_textures(path[0]))
+	{
+		if (str[0] == 'F')
+		{
+			c_f = ft_split(str, ',');
+			parse->F_rgb[0] = ft_atoi(c_f[0]);
+			parse->F_rgb[1] = ft_atoi(c_f[1]);
+			parse->F_rgb[2] = ft_atoi(c_f[2]);
+		}
+		else if (str[0] == 'C')
+		{
+			c_f = ft_split(str, ',');
+			parse->C_rgb[0] = ft_atoi(c_f[0]);
+			parse->C_rgb[1] = ft_atoi(c_f[1]);
+			parse->C_rgb[2] = ft_atoi(c_f[2]);
+		}
+	}
+	free_str(&str);
+	free_mat(&path);
+	free_mat(&c_f);
+}
+
+void	ft_parse_textures(char *line, t_parse *parse)
+{
+	char	*str;
+	char	**path;
+
 	str = 0;
 	path = 0;
 	str = ft_strtrim(line, " ");
@@ -52,24 +83,9 @@ void	ft_parse_textures(char *line, t_parse *parse)
 			parse->WE_path = ft_strdup(path[1]);
 		else if (!ft_strncmp(path[0], "EA", 3))
 			parse->EA_path = ft_strdup(path[1]);
-		else if (str[0] == 'F')
-		{
-			c_f = ft_split(str, ',');
-			parse->F_rgb[0] = ft_atoi(c_f[0]);
-			parse->F_rgb[1] = ft_atoi(c_f[1]);
-			parse->F_rgb[2] = ft_atoi(c_f[2]);
-		}
-		else if (str[0] == 'C')
-		{
-			c_f = ft_split(str, ',');
-			parse->C_rgb[0] = ft_atoi(c_f[0]);
-			parse->C_rgb[1] = ft_atoi(c_f[1]);
-			parse->C_rgb[2] = ft_atoi(c_f[2]);
-		}
-	}	
+	}
 	free_str(&str);
 	free_mat(&path);
-	free_mat(&c_f);
 }
 
 int	ft_check_map2(char **map)
@@ -83,13 +99,13 @@ int	ft_check_map2(char **map)
 		x = 1;
 		while (map[y][x] && (size_t)x < ft_strlen(map[y]) - 1)
 		{
-			if (map[y][x] == 32) 
+			if (map[y][x] == 32)
 			{
 				if (map[y - 1][x - 1] == '0' || map[y - 1][x] == '0' ||
 					map[y - 1][x + 1] == '0' || map[y][x - 1] == '0' ||
 					map[y][x + 1] == '0' || map[y + 1][x - 1] == '0' ||
 					map[y + 1][x] == '0' || map[y + 1][x - 1] == '0')
-					return (0);
+					return (0);	
 			}
 			x++;
 		}
@@ -171,6 +187,7 @@ char	**ft_read_map(t_game *game, char *argv, t_parse *parse)
 	while (line != 0)
 	{
 		ft_parse_textures(line, parse);
+		ft_parse_c_f(line, parse);
 		if (*line == '\0' || *line == '\n')
 			;
 		else if (j < 6)
