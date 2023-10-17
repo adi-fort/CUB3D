@@ -113,7 +113,7 @@ void	raycaster_flat(t_game *game)
 		draw_texture(game, x);
 		game->minimap.begin_ray.x = game->player.pos.x * 11;
 		game->minimap.begin_ray.y = game->player.pos.y * 11;
-			game->minimap.end_ray.x = (game->ray.ray_dir.x
+		game->minimap.end_ray.x = (game->ray.ray_dir.x
 				* game->ray.perp_wall_dist + game->player.pos.x) * (double)11;
 		game->minimap.end_ray.y = (game->ray.ray_dir.y
 				* game->ray.perp_wall_dist + game->player.pos.y) * (double)11;

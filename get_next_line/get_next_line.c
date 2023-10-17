@@ -3,70 +3,129 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfiliagg <dfiliagg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dfiliagg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/24 09:30:57 by dfiliagg          #+#    #+#             */
-/*   Updated: 2023/07/25 12:33:15 by adi-fort         ###   ########.fr       */
+/*   Created: 2023/03/21 09:17:05 by dfiliagg          #+#    #+#             */
+/*   Updated: 2023/06/13 10:40:21 by adi-fort         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	ft_strncpyfrom(char *s, int n)
+char	*print_remain(char	*str)
 {
-	int	i;
-	int	j;
+	char	*ret;
+	char	*new_buff;
+	int		i;
 
-	i = n;
-	j = 0;
-	if (!s)
-		return ;
-	while (s[++i])
+	new_buff = ft_strchr(str, '\n') + 1;
+	if (!str)
+		return (0);
+	i = 0;
+	while (str[i] && str[i] != '\n')
+		i++;
+	ret = (char *) malloc((i + 2) * sizeof(char));
+	ft_strlcpy(ret, str, i + 2);
+	if (ft_strchr(str, '\n') != 0)
+		ft_strlcpy(str, new_buff, ft_strlen(new_buff) + 1);
+	else
 	{
-		s[j] = s[i];
-		j++;
+		i = -1;
+		while (++i < 1)
+			str[i] = 0;
 	}
-	s[j] = 0;
-	return ;
+	return (ret);
 }
 
-char	*get(char *buf, int fd, int *rd)
+char	*get_line(int fd)
 {
-	char		*line;
-	char		*tmp;
+	char	buff[1 + 1];
+	int		flag;
+	char	*ret;
+	int		i;
 
-	*rd = 1;
-	line = ft_strdup2(buf);
-	while (ft_strchr2(line, '\n') == -1 && *rd != 0)
+	flag = 1;
+	ret = ft_strdup("");
+	buff[1] = 0;
+	while (ft_strchr(ret, '\n') == 0 && flag)
 	{
-		*rd = read(fd, (void *)buf, BUFFER_SIZE);
-		buf[*rd] = 0;
-		tmp = line;
-		line = ft_strjoin2(tmp, buf);
-		free(tmp);
+		i = -1;
+		while (++i < 1)
+			buff[i] = 0;
+		flag = read(fd, buff, 1);
+		ret = ft_strjoin_gnl(ret, buff);
+		if (flag <= 0 && !*ret)
+		{
+			free(ret);
+			return (0);
+		}
 	}
-	return (line);
+	return (ret);
+}
+
+char	**parser(char *str, int len0)
+{
+	char	**ret;
+	int		len1;
+	char	*chr;
+
+	if (!str)
+		return (0);
+	chr = ft_strchr(str, '\n');
+	len0 = 0;
+	while (str[len0] && str[len0] != '\n')
+		len0++;
+	len0++;
+	if (chr != 0)
+		len0 = ((chr + 1) - str) + 1;
+	if (chr == 0)
+		len1 = 0;
+	else
+		len1 = ft_strlen(chr + 1) + 1;
+	ret = (char **) malloc(2 * sizeof(char *));
+	ret[0] = (char *)malloc((len0) * sizeof(char));
+	ret[1] = (char *)malloc((len1) * sizeof(char));
+	ft_strlcpy(ret[0], str, len0);
+	if (len1 > 0)
+		ft_strlcpy(ret[1], (chr + 1), len1);
+	free(str);
+	return (ret);
+}
+
+void	free_all(char **strs, char *str, char *buff)
+{
+	ft_strlcpy(buff, strs[1], ft_strlen(strs[1]) + 1);
+	free(strs[0]);
+	free(strs[1]);
+	free(strs);
+	free(str);
 }
 
 char	*get_next_line(int fd)
 {
-	int			rd;
-	static char	buf[BUFFER_SIZE];
-	char		*line;
+	static char	buff[1 + 1];
+	char		*full;
+	char		*str;
+	char		**strs;
+	char		*ret;
 
-	if (BUFFER_SIZE <= 0 || fd < 0)
-		return (0);
-	line = get(buf, fd, &rd);
-	if (rd == 0)
+	if (fd < 0 || 1 <= 0)
+		return (NULL);
+	if (ft_strchr(buff, '\n'))
+		return (print_remain(buff));
+	str = get_line(fd);
+	if (!str)
 	{
-		if (!line)
-		{
-			free(line);
-			return (0);
-		}
-		return (line);
+		if (buff[0])
+			return (print_remain(buff));
+		return (0);
 	}
-	line[ft_strchr2(line, '\n') + 1] = 0;
-	ft_strncpyfrom(buf, ft_strchr2(buf, '\n'));
-	return (line);
+	if (ft_strchr(str, '\n') == 0 && !buff[0])
+		return (str);
+	full = ft_strdup(buff);
+	full = ft_strjoin_gnl(full, str);
+	strs = parser(full, 0);
+	ret = ft_strdup(strs[0]);
+	free_all(strs, str, buff);
+	return (ret);
 }

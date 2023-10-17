@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3D.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfiliagg <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dfiliagg <dfiliagg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 09:17:05 by dfiliagg          #+#    #+#             */
-/*   Updated: 2023/06/13 10:40:21 by adi-fort         ###   ########.fr       */
+/*   Updated: 2023/09/08 10:33:38 by dfiliagg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,21 +173,28 @@ void	init(t_game *game);
 int		set_player(t_game *game);
 
 /*Map Parser*/
+void	free_string(char *str);
+void	free_mat(char **mat);
+int		read_m(t_game *game, char *file);
+int		read_map(t_game *game, char*line, int fd);
 int		parsing(int argc, char **argv, t_game *game);
-void	ft_parse_c_f(char *line, t_game *game);
-int		ft_map_len(char **map);
-int		ft_map_h(char **map);
-void	free_str(char	**str);
-void	free_mat(char	***mat);
-char	**ft_read_map(t_game *game, char *argv);
-int		count_line(t_game *game, int fd, char *path);
-int		get_map_line(char *path);
-int		ft_check_textures(char *str);
-void	ft_parse_textures(char *line, t_game *game);
+int		count_char(char *str, char c);
+int		check_color(int n);
+int		s_tex(t_game *game, char *line, char *c);
+int		free_texture(t_game *game);
+int		check_one(char *str);
+int		bad_chr(char *str);
+int		check_letters(char **map);
+int		check_min_max(t_game *game, char c, char **mat);
+void	print_map(char **mat);
+int		check_first_wall(t_game *game);
 int		ft_check_map2(char **map);
-char	**ft_check_map(char **map);
-int		free_matrix(char **map);
-int		ft_check_rgb(t_game *game);
-int		check_all_num(char **c_f, int n);
-int		check_p(char **c_f, int n);
+void	get_map_hw(t_game *game);
+void	error(t_game *game, char *msg);
+void	fill_one(t_game *game);
+void	check_last_z(t_game *game);
+void	fill_space(t_game *game);
+void	check_empty_file(char *s);
+void	check_one_last(t_game *game);
+
 #endif

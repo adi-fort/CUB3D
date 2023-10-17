@@ -14,7 +14,7 @@ NAME	= cub3d
 FLAGS	=  -Wall -Wextra -Werror
 CC		= gcc ${FLAGS}
 RM		= rm -f
-SRC		= $(wildcard *.c) $(wildcard get_next_line/*.c) $(wildcard init/*.c) $(wildcard draw/*.c) $(wildcard raycaster/*.c) $(wildcard moves/*.c) $(wildcard parse/*.c)
+SRC		= $(wildcard *.c) $(wildcard get_next_line/*.c) $(wildcard init/*.c) $(wildcard draw/*.c) $(wildcard raycaster/*.c) $(wildcard moves/*.c) $(wildcard parser/*.c)
 OBJ		= ${SRC:.c=.o}
 LFT		= libft/libft.a
 MLB		= minilibx-linux/libmlx.a

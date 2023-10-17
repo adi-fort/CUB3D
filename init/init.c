@@ -37,7 +37,7 @@ void	textures(t_game *game)
 }
 
 void	init(t_game *game)
-{	
+{
 	game->mlx = mlx_init();
 	game->mlx_win = mlx_new_window (game->mlx, WIDTH, HEIGHT, NAME);
 	game->data.img = mlx_new_image(game->mlx, WIDTH, HEIGHT);

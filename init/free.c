@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dfiliagg <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dfiliagg <dfiliagg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 09:17:05 by dfiliagg          #+#    #+#             */
-/*   Updated: 2023/06/13 10:40:21 by adi-fort         ###   ########.fr       */
+/*   Updated: 2023/09/08 10:50:08 by dfiliagg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	free_matrix(char **map)
 	while (map[++i])
 		free (map[i]);
 	free (map);
+	map = 0;
 	return (1);
 }
 
@@ -33,6 +34,10 @@ int	free_texture(t_game *game)
 		free(game->tex.est);
 	if (game->tex.ovest)
 		free(game->tex.ovest);
+	game->tex.nord = 0;
+	game->tex.sud = 0;
+	game->tex.ovest = 0;
+	game->tex.est = 0;
 	return (1);
 }
 
@@ -48,5 +53,6 @@ int	free_game(t_game *game)
 {
 	free_texture(game);
 	free_map(game->map);
+	game->map.map = NULL;
 	exit(0);
 }
